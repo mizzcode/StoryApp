@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
-
         setupView()
         setupAction()
     }
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         fragmentManager
             .beginTransaction()
-            .add(binding.frameContainer.id, storyFragment, StoryFragment::class.java.simpleName)
+            .add(binding.frameContainer, storyFragment, StoryFragment::class.java.simpleName)
             .addToBackStack(null)
             .commit()
     }

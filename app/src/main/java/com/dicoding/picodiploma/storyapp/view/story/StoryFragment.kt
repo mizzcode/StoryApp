@@ -1,7 +1,6 @@
 package com.dicoding.picodiploma.storyapp.view.story
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,7 @@ import com.dicoding.picodiploma.storyapp.data.Result
 class StoryFragment : Fragment() {
     private var _binding: FragmentStoryBinding? = null
     private val binding get() = _binding!!
+    private val storyAdapter = StoryAdapter()
 
     private val viewModel by viewModels<StoryViewModel> {
         ViewModelFactory.getInstance(requireContext())
@@ -35,23 +35,21 @@ class StoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val storyAdapter = StoryAdapter()
-
-        viewModel.getStories().observe(viewLifecycleOwner) { result ->
-            if (result != null) {
-                when (result) {
-                    is Result.Loading -> {
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
-                    is Result.Success -> {
-                        binding.progressBar.visibility = View.GONE
-                        val data = result.data.listStory
-                        storyAdapter.submitList(data)
-                    }
-                    is Result.Error -> {
-                        binding.progressBar.visibility = View.GONE
-                        Toast.makeText(context, "Tidak ada koneksi internet", Toast.LENGTH_SHORT).show()
-                        Log.d("TAG", "onViewCreated: ${result.error}")
+        viewModel.getSession().observe(viewLifecycleOwner) { session ->
+            if (session.token.isNotEmpty()) {
+                viewModel.getStories().observe(viewLifecycleOwner) { result ->
+                    when (result) {
+                        is Result.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        is Result.Success -> {
+                            binding.progressBar.visibility = View.GONE
+                            storyAdapter.submitList(result.data.listStory)
+                        }
+                        is Result.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(context, result.error, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }

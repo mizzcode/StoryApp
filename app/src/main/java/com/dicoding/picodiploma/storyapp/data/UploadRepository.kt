@@ -12,7 +12,7 @@ import retrofit2.HttpException
 import java.io.File
 
 class UploadRepository private constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
 ) {
 
     fun uploadImage(imageFile: File, description: String) = liveData {

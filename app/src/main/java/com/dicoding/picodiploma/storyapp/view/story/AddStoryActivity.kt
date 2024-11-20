@@ -129,6 +129,11 @@ class AddStoryActivity : AppCompatActivity() {
 
             val description = binding.editTextDescription.text.toString()
 
+            if (description.isEmpty()) {
+                showToast(getString(R.string.desc_empty_warning))
+                return
+            }
+
             viewModel.uploadImage(imageFile, description).observe(this) { result ->
                 if (result != null) {
                     when (result) {
