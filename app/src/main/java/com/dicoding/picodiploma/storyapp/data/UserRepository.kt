@@ -2,6 +2,7 @@ package com.dicoding.picodiploma.storyapp.data
 
 import androidx.lifecycle.liveData
 import com.dicoding.picodiploma.storyapp.data.api.ApiService
+import com.dicoding.picodiploma.storyapp.data.api.DetailStoryResponse
 import com.dicoding.picodiploma.storyapp.data.api.LoginResponse
 import com.dicoding.picodiploma.storyapp.data.api.RegisterResponse
 import com.dicoding.picodiploma.storyapp.data.api.StoryResponse
@@ -50,6 +51,18 @@ class UserRepository private constructor(
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
             val errorResponse = Gson().fromJson(errorBody, StoryResponse::class.java)
+            emit(Result.Error(errorResponse.message ?: "Terjadi Kesalahan"))
+        }
+    }
+
+    fun getDetailStory(id: String) = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.getDetailStory(id)
+            emit(Result.Success(response))
+        } catch (e: HttpException) {
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, DetailStoryResponse::class.java)
             emit(Result.Error(errorResponse.message ?: "Terjadi Kesalahan"))
         }
     }

@@ -2,7 +2,6 @@ package com.dicoding.picodiploma.storyapp.view.signup
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Patterns
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -48,19 +47,6 @@ class SignupActivity : AppCompatActivity() {
             val name = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                binding.emailEditText.setError("Email tidak valid", null)
-                return@setOnClickListener
-            }
-
-            if (password.length < 8) {
-                binding.passwordEditText.setError(
-                    "Password tidak boleh kurang dari 8 karakter",
-                    null
-                )
-                return@setOnClickListener
-            }
 
             viewModel.register(name, email, password).observe(this) { result ->
                 if (result != null) {

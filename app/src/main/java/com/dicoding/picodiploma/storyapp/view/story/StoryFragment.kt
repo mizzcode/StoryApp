@@ -10,8 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.storyapp.databinding.FragmentStoryBinding
-import com.dicoding.picodiploma.storyapp.view.StoryAdapter
-import com.dicoding.picodiploma.storyapp.view.StoryViewModel
 import com.dicoding.picodiploma.storyapp.view.ViewModelFactory
 import com.dicoding.picodiploma.storyapp.data.Result
 

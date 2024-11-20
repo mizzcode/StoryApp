@@ -2,6 +2,7 @@ package com.dicoding.picodiploma.storyapp.data.api
 
 import com.dicoding.picodiploma.storyapp.BuildConfig
 import okhttp3.Interceptor
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -16,10 +17,15 @@ object ApiConfig {
         }
         val authInterceptor = Interceptor { chain ->
             val req = chain.request()
-            val requestHeaders = req.newBuilder()
+            val requestBuilder = req.newBuilder()
                 .addHeader("Authorization", "Bearer $token")
-                .build()
-            chain.proceed(requestHeaders)
+
+            if (req.body is MultipartBody) {
+                requestBuilder.addHeader("Content-Type", "multipart/form-data")
+            }
+
+            val request = requestBuilder.build()
+            chain.proceed(request)
         }
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)

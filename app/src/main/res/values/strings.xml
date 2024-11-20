@@ -14,4 +14,13 @@
     <string name="greeting">Halo %1$s,</string>
     <string name="logout">Keluar</string>
     <string name="image_story">image story</string>
+    <string name="add_story">Tambah Story</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload">Upload</string>
+    <string name="detail_story">Detail Story\n</string>
+    <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="deskripsi">Deskripsi</string>
+    <string name="imagepreview" translatable="false">previewImage</string>
+    <string name="imagestory" translatable="false">ImageStory</string>
 </resources>

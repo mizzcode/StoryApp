@@ -3,12 +3,16 @@ package com.dicoding.picodiploma.storyapp.view.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.dicoding.picodiploma.storyapp.R
 import com.dicoding.picodiploma.storyapp.databinding.ActivityMainBinding
 import com.dicoding.picodiploma.storyapp.view.ViewModelFactory
+import com.dicoding.picodiploma.storyapp.view.story.AddStoryActivity
 import com.dicoding.picodiploma.storyapp.view.story.StoryFragment
 import com.dicoding.picodiploma.storyapp.view.welcome.WelcomeActivity
 
@@ -55,5 +59,26 @@ class MainActivity : AppCompatActivity() {
             .add(binding.frameContainer.id, storyFragment, StoryFragment::class.java.simpleName)
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_options, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add_story -> {
+                val intent = Intent(this, AddStoryActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.action_logout -> {
+                viewModel.logout()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
