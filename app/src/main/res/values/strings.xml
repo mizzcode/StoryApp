@@ -24,4 +24,5 @@
     <string name="imagepreview" translatable="false">previewImage</string>
     <string name="imagestory" translatable="false">ImageStory</string>
     <string name="desc_empty_warning" translatable="false">please insert description</string>
+    <string name="path_learning" translatable="false">Path Learning</string>
 </resources>
