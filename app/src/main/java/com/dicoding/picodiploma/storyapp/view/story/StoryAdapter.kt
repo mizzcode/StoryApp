@@ -23,8 +23,8 @@ class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val event = getItem(position)
-        holder.bind(event)
+        val story = getItem(position)
+        holder.bind(story)
     }
 
     class MyViewHolder(
