@@ -35,9 +35,10 @@ class StoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         viewModel.getSession().observe(viewLifecycleOwner) { session ->
             if (session.token.isNotEmpty()) {
-                viewModel.getStories().observe(viewLifecycleOwner) { result ->
+                viewModel.getStories(session.token).observe(viewLifecycleOwner) { result ->
                     when (result) {
                         is Result.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE

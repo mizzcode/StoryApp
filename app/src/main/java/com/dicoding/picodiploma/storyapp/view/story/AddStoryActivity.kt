@@ -134,22 +134,26 @@ class AddStoryActivity : AppCompatActivity() {
                 return
             }
 
-            viewModel.uploadImage(imageFile, description).observe(this) { result ->
-                if (result != null) {
-                    when (result) {
-                        is Result.Error -> {
-                            showLoading(false)
-                            showToast(result.error)
-                        }
-                        Result.Loading -> {
-                            showLoading(true)
-                        }
-                        is Result.Success -> {
-                            showLoading(false)
-                            showToast(result.data.message)
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
+            viewModel.getSession().observe(this) {session ->
+                if (session.token.isNotEmpty()) {
+                    viewModel.uploadImage(imageFile, description, session.token).observe(this) { result ->
+                        if (result != null) {
+                            when (result) {
+                                is Result.Error -> {
+                                    showLoading(false)
+                                    showToast(result.error)
+                                }
+                                Result.Loading -> {
+                                    showLoading(true)
+                                }
+                                is Result.Success -> {
+                                    showLoading(false)
+                                    showToast(result.data.message)
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                    startActivity(intent)
+                                }
+                            }
                         }
                     }
                 }

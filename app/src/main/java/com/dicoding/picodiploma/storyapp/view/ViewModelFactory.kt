@@ -47,7 +47,7 @@ class ViewModelFactory(
         fun getInstance(context: Context): ViewModelFactory {
             return INSTANCE ?: synchronized(this) {
                 val userRepository = Injection.provideUserRepository(context)
-                val uploadRepository = Injection.provideUploadRepository(context)
+                val uploadRepository = Injection.provideUploadRepository()
                 ViewModelFactory(userRepository, uploadRepository).also {
                     INSTANCE = it
                 }

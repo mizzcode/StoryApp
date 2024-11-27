@@ -15,7 +15,7 @@ class StoryViewModel(private val userRepository: UserRepository, private val upl
     fun getSession(): LiveData<UserModel> {
         return userRepository.getSession().asLiveData()
     }
-    fun getStories() = userRepository.getStories()
+    fun getStories(token: String) = userRepository.getStories(token)
 
-    fun uploadImage(file: File, description: String) = uploadRepository.uploadImage(file, description)
+    fun uploadImage(file: File, description: String, token: String) = uploadRepository.uploadImage(file, description, token)
 }

@@ -10,6 +10,7 @@ interface ApiService {
     suspend fun uploadImage(
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
+        @Header("Authorization") token: String
     ): FileUploadResponse
 
     @FormUrlEncoded
@@ -28,10 +29,13 @@ interface ApiService {
     ) : LoginResponse
 
     @GET("stories")
-    suspend fun getStories(): StoryResponse
+    suspend fun getStories(
+        @Header("Authorization") token: String,
+    ): StoryResponse
 
     @GET("stories/{id}")
     suspend fun getDetailStory(
-        @Path("id") id: String
+        @Path("id") id: String,
+        @Header("Authorization") token: String,
     ): DetailStoryResponse
 }

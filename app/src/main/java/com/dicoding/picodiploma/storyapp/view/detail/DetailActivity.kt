@@ -51,52 +51,56 @@ class DetailActivity : AppCompatActivity() {
 
         val id = intent.getStringExtra(EXTRA_ID)
 
-        if (id != null) {
-            viewModel.getDetailStory(id).observe(this) {result ->
-                if (result != null) {
-                    when (result) {
-                        is Result.Error -> {
-                            binding.progressBar.visibility = View.GONE
-                        }
-                        Result.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
-                        }
-                        is Result.Success -> {
-                            binding.progressBar.visibility = View.GONE
+        viewModel.getSession().observe(this) {session ->
+            if (session.token.isNotEmpty()) {
+                if (id != null) {
+                    viewModel.getDetailStory(id, session.token).observe(this) {result ->
+                        if (result != null) {
+                            when (result) {
+                                is Result.Error -> {
+                                    binding.progressBar.visibility = View.GONE
+                                }
+                                Result.Loading -> {
+                                    binding.progressBar.visibility = View.VISIBLE
+                                }
+                                is Result.Success -> {
+                                    binding.progressBar.visibility = View.GONE
 
-                            val data = result.data
+                                    val data = result.data
 
-                            Glide.with(this@DetailActivity)
-                                .load(data.story?.photoUrl)
-                                .diskCacheStrategy(DiskCacheStrategy.ALL) // Menyimpan gambar di disk cache
-                                .listener(object : RequestListener<Drawable> {
-                                    override fun onLoadFailed(
-                                        e: GlideException?,
-                                        model: Any?,
-                                        target: Target<Drawable>,
-                                        isFirstResource: Boolean
-                                    ): Boolean {
-                                        binding.progressBar.visibility = View.GONE
-                                        Toast.makeText(this@DetailActivity, "Tidak ada koneksi internet", Toast.LENGTH_SHORT).show()
-                                        return false
-                                    }
+                                    Glide.with(this@DetailActivity)
+                                        .load(data.story?.photoUrl)
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL) // Menyimpan gambar di disk cache
+                                        .listener(object : RequestListener<Drawable> {
+                                            override fun onLoadFailed(
+                                                e: GlideException?,
+                                                model: Any?,
+                                                target: Target<Drawable>,
+                                                isFirstResource: Boolean
+                                            ): Boolean {
+                                                binding.progressBar.visibility = View.GONE
+                                                Toast.makeText(this@DetailActivity, "Tidak ada koneksi internet", Toast.LENGTH_SHORT).show()
+                                                return false
+                                            }
 
-                                    override fun onResourceReady(
-                                        resource: Drawable,
-                                        model: Any,
-                                        target: Target<Drawable>?,
-                                        dataSource: DataSource,
-                                        isFirstResource: Boolean
-                                    ): Boolean {
-                                        binding.progressBar.visibility = View.GONE
-                                        return false
-                                    }
+                                            override fun onResourceReady(
+                                                resource: Drawable,
+                                                model: Any,
+                                                target: Target<Drawable>?,
+                                                dataSource: DataSource,
+                                                isFirstResource: Boolean
+                                            ): Boolean {
+                                                binding.progressBar.visibility = View.GONE
+                                                return false
+                                            }
 
-                                })
-                                .into(binding.ivStory)
+                                        })
+                                        .into(binding.ivStory)
 
-                            binding.titleStory.text = data.story?.name
-                            binding.descStory.text = data.story?.description
+                                    binding.titleStory.text = data.story?.name
+                                    binding.descStory.text = data.story?.description
+                                }
+                            }
                         }
                     }
                 }

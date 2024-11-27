@@ -42,11 +42,11 @@ class UserRepository private constructor(
         }
     }
 
-    fun getStories() = liveData {
+    fun getStories(token: String) = liveData {
         emit(Result.Loading)
 
         try {
-            val response = apiService.getStories()
+            val response = apiService.getStories("Bearer $token")
             emit(Result.Success(response))
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
@@ -55,10 +55,10 @@ class UserRepository private constructor(
         }
     }
 
-    fun getDetailStory(id: String) = liveData {
+    fun getDetailStory(id: String, token: String) = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.getDetailStory(id)
+            val response = apiService.getDetailStory(id, "Bearer $token")
             emit(Result.Success(response))
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
