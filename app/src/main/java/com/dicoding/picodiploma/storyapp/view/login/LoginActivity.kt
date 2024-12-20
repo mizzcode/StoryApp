@@ -63,8 +63,9 @@ class LoginActivity : AppCompatActivity() {
                             showLoading(false)
 
                             val token = result.data.loginResult?.token ?: ""
+                            val name = result.data.loginResult?.name ?: ""
 
-                            viewModel.saveSession(UserModel(email, token, true))
+                            viewModel.saveSession(UserModel(name, "", 0.0, 0.0, email, token, true))
 
                             AlertDialog.Builder(this).apply {
                                 setTitle("Yeah!")

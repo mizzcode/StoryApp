@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.picodiploma.storyapp.R
 import com.dicoding.picodiploma.storyapp.databinding.ActivityMainBinding
 import com.dicoding.picodiploma.storyapp.view.ViewModelFactory
+import com.dicoding.picodiploma.storyapp.view.maps.MapsActivity
 import com.dicoding.picodiploma.storyapp.view.story.AddStoryActivity
 import com.dicoding.picodiploma.storyapp.view.story.StoryFragment
 import com.dicoding.picodiploma.storyapp.view.welcome.WelcomeActivity
@@ -68,6 +69,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.map -> {
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             R.id.action_add_story -> {
                 val intent = Intent(this, AddStoryActivity::class.java)
                 startActivity(intent)

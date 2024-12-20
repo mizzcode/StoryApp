@@ -9,6 +9,7 @@ import com.dicoding.picodiploma.storyapp.di.Injection
 import com.dicoding.picodiploma.storyapp.view.detail.DetailViewModel
 import com.dicoding.picodiploma.storyapp.view.login.LoginViewModel
 import com.dicoding.picodiploma.storyapp.view.main.MainViewModel
+import com.dicoding.picodiploma.storyapp.view.maps.MapsViewModel
 import com.dicoding.picodiploma.storyapp.view.signup.RegisterViewModel
 import com.dicoding.picodiploma.storyapp.view.story.StoryViewModel
 
@@ -34,6 +35,9 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(userRepository) as T
+            }
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
+                MapsViewModel(userRepository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

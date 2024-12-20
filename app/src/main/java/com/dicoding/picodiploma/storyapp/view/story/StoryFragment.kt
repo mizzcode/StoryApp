@@ -5,12 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.storyapp.databinding.FragmentStoryBinding
 import com.dicoding.picodiploma.storyapp.view.ViewModelFactory
-import com.dicoding.picodiploma.storyapp.data.Result
+import com.dicoding.picodiploma.storyapp.view.LoadingStateAdapter
 
 class StoryFragment : Fragment() {
     private var _binding: FragmentStoryBinding? = null
@@ -38,20 +37,8 @@ class StoryFragment : Fragment() {
 
         viewModel.getSession().observe(viewLifecycleOwner) { session ->
             if (session.token.isNotEmpty()) {
-                viewModel.getStories(session.token).observe(viewLifecycleOwner) { result ->
-                    when (result) {
-                        is Result.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
-                        }
-                        is Result.Success -> {
-                            binding.progressBar.visibility = View.GONE
-                            storyAdapter.submitList(result.data.listStory)
-                        }
-                        is Result.Error -> {
-                            binding.progressBar.visibility = View.GONE
-                            Toast.makeText(context, result.error, Toast.LENGTH_SHORT).show()
-                        }
-                    }
+                viewModel.getStories(session.token).observe(viewLifecycleOwner) {
+                    storyAdapter.submitData(lifecycle, it)
                 }
             }
         }
@@ -59,7 +46,11 @@ class StoryFragment : Fragment() {
         binding.rvStories.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
-            adapter = storyAdapter
+            adapter = storyAdapter.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    storyAdapter.retry()
+                }
+            )
         }
     }
 
