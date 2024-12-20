@@ -25,7 +25,7 @@
     <string name="imagestory" translatable="false">ImageStory</string>
     <string name="desc_empty_warning" translatable="false">please insert description</string>
     <string name="path_learning" translatable="false">Path Learning</string>
-    <string name="maps">Maps</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="maps" translatable="false">Maps</string>
+    <string name="title_activity_maps" translatable="false">MapsActivity</string>
     <string name="retry">Coba Lagi</string>
 </resources>
