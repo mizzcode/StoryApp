@@ -10,7 +10,9 @@ interface ApiService {
     suspend fun uploadImage(
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
-        @Header("Authorization") token: String
+        @Part("lat") lat: Double?,
+        @Part("lon") lon: Double?,
+        @Header("Authorization") token: String,
     ): FileUploadResponse
 
     @FormUrlEncoded

@@ -29,4 +29,5 @@
     <string name="title_activity_maps" translatable="false">MapsActivity</string>
     <string name="retry">Coba Lagi</string>
     <string name="hero_login" translatable="false">hero login</string>
+    <string name="insert_my_gps_for_this_story">Masukan GPS atau Lokasi saya untuk story ini ?</string>
 </resources>

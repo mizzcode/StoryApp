@@ -23,4 +23,5 @@
     <string name="empty_image_warning">Please insert an image file first.</string>
     <string name="deskripsi">Description</string>
     <string name="retry">Try Again</string>
+    <string name="insert_my_gps_for_this_story">Insert My GPS or Location for this story ?</string>
 </resources>

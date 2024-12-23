@@ -21,5 +21,5 @@ class StoryViewModel(private val userRepository: UserRepository, private val upl
     }
     fun getStories(token: String): LiveData<PagingData<ListStoryItem>> = userRepository.getStories(token).cachedIn(viewModelScope)
 
-    fun uploadImage(file: File, description: String, token: String) = uploadRepository.uploadImage(file, description, token)
+    fun uploadImage(file: File, description: String, lat: Double?, lon: Double?, token: String) = uploadRepository.uploadImage(file, description, lat, lon, token)
 }

@@ -22,12 +22,18 @@ import com.dicoding.picodiploma.storyapp.data.Result
 import com.dicoding.picodiploma.storyapp.databinding.ActivityAddStoryBinding
 import com.dicoding.picodiploma.storyapp.getImageUri
 import com.dicoding.picodiploma.storyapp.reduceFileImage
+import com.dicoding.picodiploma.storyapp.showToast
 import com.dicoding.picodiploma.storyapp.uriToFile
 import com.dicoding.picodiploma.storyapp.view.ViewModelFactory
 import com.dicoding.picodiploma.storyapp.view.main.MainActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var currentLat: Double? = null
+    private var currentLon: Double? = null
 
     private val viewModel: StoryViewModel by viewModels {
         ViewModelFactory.getInstance(this)
@@ -64,9 +70,51 @@ class AddStoryActivity : AppCompatActivity() {
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        binding.switchLocation.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                getCurrentLocation()
+            } else {
+                currentLat = null
+                currentLon = null
+            }
+        }
+
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
         binding.uploadButton.setOnClickListener { uploadImage() }
+    }
+
+    private fun getCurrentLocation() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    if (location != null) {
+                        currentLat = location.latitude
+                        currentLon = location.longitude
+                        showToast(this, "Location Added")
+                    } else {
+                        showToast(this, "Location not found")
+                    }
+                }
+        } else {
+            requestLocationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    private val requestLocationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            getCurrentLocation()
+        } else {
+            showToast(this, "Permission Location Denied")
+        }
     }
 
     private fun startGallery() {
@@ -136,7 +184,7 @@ class AddStoryActivity : AppCompatActivity() {
 
             viewModel.getSession().observe(this) {session ->
                 if (session.token.isNotEmpty()) {
-                    viewModel.uploadImage(imageFile, description, session.token).observe(this) { result ->
+                    viewModel.uploadImage(imageFile, description, currentLat, currentLon, session.token).observe(this) { result ->
                         if (result != null) {
                             when (result) {
                                 is Result.Error -> {
