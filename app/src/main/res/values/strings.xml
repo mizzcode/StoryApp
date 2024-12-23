@@ -28,4 +28,5 @@
     <string name="maps" translatable="false">Maps</string>
     <string name="title_activity_maps" translatable="false">MapsActivity</string>
     <string name="retry">Coba Lagi</string>
+    <string name="hero_login" translatable="false">hero login</string>
 </resources>
